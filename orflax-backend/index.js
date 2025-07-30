@@ -184,7 +184,9 @@ app.get("/voices", async (req, res) => {
 
 const getCustomAnswer = async (queryText) => {
   try {
-    const { stdout } = await execPromise(`python3 langchain-rag-tutorial/query_data.py "${queryText}"`);
+    const pythonPath = `"C:\\Users\\Rajdeep Agarwal\\OneDrive\\Desktop\\Orflax-AI\\orflax-backend\\langchain-rag-tutorial\\venv\\Scripts\\python.exe"`;
+    const scriptPath = "langchain-rag-tutorial/query_data.py";
+    const { stdout } = await execPromise(`${pythonPath} ${scriptPath} "${queryText}"`);
     return JSON.parse(stdout); // expects { response: "...", sources: [...] }
   } catch (err) {
     console.error("Error calling Python:", err);
@@ -209,9 +211,8 @@ const lipSyncMessage = async (message) => {
     // -y to overwrite the file
   );
   console.log(`Conversion done in ${new Date().getTime() - time}ms`);
-  await execCommand(
-    `./bin/rhubarb -f json -o audios/message_${message}.json audios/message_${message}.wav -r phonetic`
-  );
+  await execCommand(`rhubarb -f json -o audios/message_${message}.json audios/message_${message}.wav -r phonetic`);
+
   // -r phonetic is faster but less accurate
   console.log(`Lip sync done in ${new Date().getTime() - time}ms`);
 };
@@ -239,28 +240,7 @@ app.post("/chat", async (req, res) => {
     });
     return;
   }
-  if (!elevenLabsApiKey || openai.apiKey === "-") {
-    res.send({
-      messages: [
-        {
-          text: "Please my dear, don't forget to add your API keys!",
-          audio: await audioFileToBase64("audios/api_0.wav"),
-          lipsync: await readJsonTranscript("audios/api_0.json"),
-          facialExpression: "angry",
-          animation: "Angry",
-        },
-        {
-          text: "You don't want to ruin Wawa Sensei with a crazy ChatGPT and ElevenLabs bill, right?",
-          audio: await audioFileToBase64("audios/api_1.wav"),
-          lipsync: await readJsonTranscript("audios/api_1.json"),
-          facialExpression: "smile",
-          animation: "Laughing",
-        },
-      ],
-    });
-    return;
-  }
-
+ 
   const { response, sources } = await getCustomAnswer(userMessage);
 
   let messages = [
