@@ -1,24 +1,54 @@
-from langchain_openai import OpenAIEmbeddings
+# from langchain_openai import OpenAIEmbeddings
+# from langchain.evaluation import load_evaluator
+# from dotenv import load_dotenv
+# import openai
+# import os
+#
+# # Load environment variables. Assumes that project contains .env file with API keys
+# load_dotenv()
+# #---- Set OpenAI API key
+# # Change environment variable name from "OPENAI_API_KEY" to the name given in
+# # your .env file.
+# openai.api_key = os.environ['OPENAI_API_KEY']
+#
+# def main():
+#     # Get embedding for a word.
+#     embedding_function = OpenAIEmbeddings()
+#     vector = embedding_function.embed_query("apple")
+#     print(f"Vector for 'apple': {vector}")
+#     print(f"Vector length: {len(vector)}")
+#
+#     # Compare vector of two words
+#     evaluator = load_evaluator("pairwise_embedding_distance")
+#     words = ("apple", "iphone")
+#     x = evaluator.evaluate_string_pairs(prediction=words[0], prediction_b=words[1])
+#     print(f"Comparing ({words[0]}, {words[1]}): {x}")
+#
+#
+# if __name__ == "__main__":
+#     main()
+
+# compare_embeddings.py
+
+# CHANGED: Import Google's embeddings class
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain.evaluation import load_evaluator
 from dotenv import load_dotenv
-import openai
-import os
 
-# Load environment variables. Assumes that project contains .env file with API keys
+# Load environment variables.
 load_dotenv()
-#---- Set OpenAI API key 
-# Change environment variable name from "OPENAI_API_KEY" to the name given in 
-# your .env file.
-openai.api_key = os.environ['OPENAI_API_KEY']
+
+# REMOVED: No longer need openai library or manual key setting.
 
 def main():
-    # Get embedding for a word.
-    embedding_function = OpenAIEmbeddings()
+    # Get embedding for a word using Google's model.
+    # CHANGED: Use GoogleGenerativeAIEmbeddings
+    embedding_function = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vector = embedding_function.embed_query("apple")
-    print(f"Vector for 'apple': {vector}")
+    print(f"Vector for 'apple': {vector[:5]}...") # Print first 5 elements for brevity
     print(f"Vector length: {len(vector)}")
 
-    # Compare vector of two words
+    # Compare vector of two words. This part works the same.
     evaluator = load_evaluator("pairwise_embedding_distance")
     words = ("apple", "iphone")
     x = evaluator.evaluate_string_pairs(prediction=words[0], prediction_b=words[1])
