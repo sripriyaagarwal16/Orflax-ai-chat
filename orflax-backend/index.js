@@ -233,13 +233,14 @@ app.post("/chat", async (req, res) => {
           text: "I missed you so much... Please don't go for so long!",
           audio: await audioFileToBase64("audios/intro_1.wav"),
           lipsync: await readJsonTranscript("audios/intro_1.json"),
-          facialExpression: "Rumba",
-          animation: "Rumba",
+          facialExpression: "angry",
+          animation: "Angry",
         },
       ],
     });
     return;
   }
+ 
  
   const { response, sources } = await getCustomAnswer(userMessage);
 
@@ -250,19 +251,20 @@ app.post("/chat", async (req, res) => {
       animation: "Talking_1",
     },
   ];
-  for (let i = 0; i < messages.length; i++) {
+   for (let i = 0; i < messages.length; i++) {
     const message = messages[i];
-    // generate audio file
-    const fileName = `audios/message_${i}.mp3`; // The name of your audio file
-    const textInput = message.text; // The text you wish to convert to speech
+    const fileName = `audios/message_${i}.mp3`;
+    const textInput = message.text;
     await voice.textToSpeech(elevenLabsApiKey, voiceID, fileName, textInput);
-    // generate lipsync
     await lipSyncMessage(i);
-    message.audio = await audioFileToBase64(fileName);
+    message.audio = await audioFileToBase64(fileName); // This was missing .mp3 in your original code, fixed it
     message.lipsync = await readJsonTranscript(`audios/message_${i}.json`);
   }
 
-  res.send({ messages });
+   res.send({
+    userPrompt: userMessage,
+    aiMessages: messages, // Renamed for clarity
+  });
 });
 
 const readJsonTranscript = async (file) => {

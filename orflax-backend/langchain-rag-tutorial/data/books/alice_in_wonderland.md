@@ -300,7 +300,7 @@ she hastily dried her eyes to see what was coming. It was the White
 Rabbit returning, splendidly dressed, with a pair of white kid gloves
 in one hand and a large fan in the other: he came trotting along in a
 great hurry, muttering to himself as he came, “Oh! the Duchess, the
-Duchess! Oh! won’t she be savage if I’ve kept her waiting!” Alice felt
+Duchess! Oh! won’t she` be savage if I’ve kept her waiting!” Alice felt
 so desperate that she was ready to ask help of any one; so, when the
 Rabbit came near her, she began, in a low, timid voice, “If you please,
 sir—” The Rabbit started violently, dropped the white kid gloves and

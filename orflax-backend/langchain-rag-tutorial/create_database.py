@@ -81,6 +81,11 @@ from langchain_community.vectorstores import Chroma
 from dotenv import load_dotenv
 import os
 import shutil
+import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger_en')
+nltk.download('maxent_ne_chunker')
+nltk.download('words')
 
 # Load environment variables.
 load_dotenv()
@@ -105,8 +110,13 @@ def generate_data_store():
 
 
 def load_documents():
+    # loader = DirectoryLoader("C:\\Users\\Rajdeep Agarwal\\OneDrive\\Desktop\\Orflax-AI\\orflax-backend\\langchain-rag-tutorial\\data\\books\\alice_in_wonderland.md", glob="*.md")
     loader = DirectoryLoader(DATA_PATH, glob="*.md")
+    print(f"Loading documents...")
     documents = loader.load()
+    print(f"working...")
+    print(f"Found{len(documents) } documents.")
+
     return documents
 
 
